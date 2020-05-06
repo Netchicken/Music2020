@@ -1,4 +1,5 @@
-﻿using System.Data.SqlClient;
+﻿using System.Data;
+using System.Data.SqlClient;
 
 namespace Music2020
 {
@@ -18,7 +19,22 @@ namespace Music2020
 
         }
 
+        public DataTable FillDGVOwnerWithOwner()
+        {
+            DataTable dt = new DataTable(); //temp table to hold the data
 
+            using (dataAdapter = new SqlDataAdapter("select * from Owner", Connection))
+            {
+                //connect to DB and get SQL
+                Connection.Open();
+
+                dataAdapter.Fill(dt);
+
+                Connection.Close();
+
+            }
+            return dt;
+        }
 
 
     }

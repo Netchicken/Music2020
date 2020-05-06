@@ -1,18 +1,20 @@
-﻿using System;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace Music2020
 {
     public partial class Form1 : Form
     {
+        Database myDatabase = new Database();
+
         public Form1()
         {
             InitializeComponent();
+            LoadDB();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        public void LoadDB()
         {
-
+            DGVOwner.DataSource = myDatabase.FillDGVOwnerWithOwner();
         }
     }
 }
