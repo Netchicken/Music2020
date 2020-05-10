@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace Music2020
@@ -19,11 +20,52 @@ namespace Music2020
 
         }
 
-        public DataTable FillDGVOwnerWithOwner()
+        #region Code not needed delete is necessary
+        /*  public DataTable FillDGVOwnerWithOwner()
+          {
+              DataTable dt = new DataTable(); //temp table to hold the data
+
+              using (dataAdapter = new SqlDataAdapter("select * from Owner", Connection))
+              {
+                  //connect to DB and get SQL
+                  Connection.Open();
+
+                  dataAdapter.Fill(dt);
+
+                  Connection.Close();
+
+              }
+              return dt;
+          }
+  */
+
+        /*  public DataTable FillDGVCDWithCD()
+          {
+              DataTable dt = new DataTable(); //temp table to hold the data
+
+              using (dataAdapter = new SqlDataAdapter("select * from CD", Connection))
+              {
+                  //connect to DB and get SQL
+                  Connection.Open();
+
+                  dataAdapter.Fill(dt);
+
+                  Connection.Close();
+
+              }
+              return dt;
+          }*/
+
+        #endregion
+
+
+        public DataTable FillDGVs(string TableName)
         {
             DataTable dt = new DataTable(); //temp table to hold the data
 
-            using (dataAdapter = new SqlDataAdapter("select * from Owner", Connection))
+            string query = "select * from " + TableName;
+
+            using (dataAdapter = new SqlDataAdapter(query, Connection))
             {
                 //connect to DB and get SQL
                 Connection.Open();
@@ -35,6 +77,55 @@ namespace Music2020
             }
             return dt;
         }
+
+        public DataTable FillOtherDGVs(string TableName, string ForeignKey, int ID)
+        {
+            DataTable dt = new DataTable(); //temp table to hold the data
+
+            string query = "select * from " + TableName + " where " + ForeignKey + "=" + ID;
+
+            using (dataAdapter = new SqlDataAdapter(query, Connection))
+            {
+                //connect to DB and get SQL
+                Connection.Open();
+
+                dataAdapter.Fill(dt);
+
+                Connection.Close();
+
+            }
+            return dt;
+        }
+
+
+
+
+
+
+
+        public List<string> FillListBoxWithGenre()
+        {
+
+            var myCommand = new SqlCommand("select genre from UniqueGenreToday", Connection);
+            var newgenre = new List<string>();
+
+            //connect to DB and get SQL
+            Connection.Open();
+
+            SqlDataReader reader = myCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                newgenre.Add(reader["genre"].ToString());
+
+            }
+            reader.Close();
+
+            Connection.Close();
+            return newgenre;
+
+        }
+
 
 
     }
